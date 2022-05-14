@@ -31,19 +31,23 @@ public class ContaCorrentePessoaFisica extends Conta {
 	public void transferir(Double valor, Conta contaDestino) {
 		TransferirException transferirException = new TransferirException();
 		transferirException.exceptionTransferir(valor, this.saldo, contaDestino);
-		this.sacar(valor);
+		this.saldo -= valor;
 		contaDestino.depositar(valor);
 	}
 	
 	public String extratoSaldoPessoaFisica(ClientePessoaFisica cliente, Conta conta, Banco banco) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(banco.getNOME());
+		sb.append("==========================================================\n");
+		sb.append("\t\t  " + banco.getNOME());
+		sb.append("\n==========================================================");
+		sb.append("\n================= EXTRATO BANCÁRIO =======================\n");
 		sb.append("\nNúmero da conta: " + conta.getNumeroConta());
 		sb.append("\nAgência: " + conta.getAGENCIA());
 		sb.append("\nConta: " + numConta);
 		sb.append("\nCliente: " + cliente.getNome());
 		sb.append("\nCPF: " + cliente.getCpf());
 		sb.append("\nSaldo: R$ " + String.format("%.2f", conta.getSaldo()));
+		sb.append("\n==========================================================");
 		return sb.toString();
 	}
 }
