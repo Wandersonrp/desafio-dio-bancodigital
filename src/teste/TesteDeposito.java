@@ -25,7 +25,7 @@ public class TesteDeposito {
 		ClientePessoaFisica clientePF2 = new ClientePessoaFisica("Alex", "000.000.000-00");
 		ContaPoupanca contaPoupanca = new ContaPoupanca(clientePF2);
 		contaPoupanca.depositar(500d);
-		String resultado2 = contaPoupanca.extratoSaldoPoupanca(clientePF2, contaPoupanca, banco);
+		String resultado2 = contaPoupanca.extratoSaldoPessoaFisica(clientePF2, contaPoupanca, banco);
 		System.out.println(resultado2);
 	}
 }

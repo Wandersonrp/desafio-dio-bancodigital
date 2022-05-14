@@ -32,7 +32,7 @@ public class TesteExtratoBancario {
 		System.out.println("\n=== Teste 03: Extrato bancário Conta Poupança: ===\n");
 		ClientePessoaFisica clientePoupanca = new ClientePessoaFisica("João", "000.000.000-00");
 		ContaPoupanca contaPoupanca = new ContaPoupanca(clientePoupanca);
-		resultadoPesquisa = contaPoupanca.extratoSaldoPoupanca(clientePoupanca, contaPoupanca, banco);
+		resultadoPesquisa = contaPoupanca.extratoSaldoPessoaFisica(clientePoupanca, contaPoupanca, banco);
 		System.out.println(resultadoPesquisa);
 	}
 }

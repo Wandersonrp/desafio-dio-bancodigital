@@ -43,7 +43,7 @@ public class TesteCriarConta {
 		ClientePessoaFisica clientePoupanca = new ClientePessoaFisica("Ana", "000.000.000-00");
 		ContaPoupanca contaPoupanca = CriarConta.criarContaPoupanca(clientePoupanca);
 		contaPoupanca.depositar(1500d);
-		result = contaPoupanca.extratoSaldoPoupanca(clientePoupanca, contaPoupanca, banco);
+		result = contaPoupanca.extratoSaldoPessoaFisica(clientePoupanca, contaPoupanca, banco);
 		System.out.println(result);
 	}
 }
