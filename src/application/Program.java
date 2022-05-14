@@ -1,11 +1,18 @@
 package application;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
-import model.entities.cliente.ClientePessoaFisica;
-import model.entities.cliente.ClientePessoaJuridica;
+import model.entities.Banco;
+import model.entities.cliente.Cliente;
+import model.entities.conta.Conta;
+import model.entities.conta.ContaPoupanca;
+import model.entities.conta.pessoafisica.ContaCorrentePessoaFisica;
+import model.entities.conta.pessoajuridica.ContaCorrentePessoaJuridica;
 import model.services.criarconta.CriarCilente;
+import model.services.criarconta.CriarConta;
 
 public class Program {
 
@@ -14,28 +21,55 @@ public class Program {
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 		
-		menuCadastrarCliente();
+		/*menuCadastrarCliente();
 		int opcao = sc.nextInt();
-		cadastrarCliente(opcao);
+		cadastrarCliente(opcao);*/
 		
+		System.out.println("Digite o cpf");
+		String cpf = sc.next();
+		String cpfFormatado = formatarCpf(cpf);
+		System.out.println(cpfFormatado);
 		
 	}
 	
-	/*public static void criarContaPessoaFisica(int value) {
+	public static void criarContaPessoaFisica(int value, Cliente cliente) {
 		switch (value) {
 			case 1:
-				CriarConta.criarContaPf(null);
+				ContaCorrentePessoaFisica ccpf = CriarConta.criarContaPf(cliente);
+				String nome = formatarNome(cliente.getNome());
+				System.out.println("\nParabéns, " + nome + "!\n"
+						+ "Conta Corrente criada com sucesso!");
+				informarContaCriada(cliente, ccpf);
 				break;
 			case 2:
-				CriarConta.criarContaPoupanca(null);
+				ContaPoupanca cpoupanca = CriarConta.criarContaPoupanca(cliente);
+				nome = formatarNome(cliente.getNome());
+				System.out.println("\nParabéns, " + nome + "!\n"
+						+ "Conta Poupança criada com sucesso!");
+				informarContaCriada(cliente, cpoupanca);
 				break;
-			case 3:
-				CriarConta.criarContaPj(null);
+			case 0:
+				System.out.println("Saindo");;
 				break;	
+			default: 
+				System.out.println("Opção informada inválida!");
 		}
-	}*/
+	}
 	
-	public static void menuCriarConta(String value, int opt) {
+	public static void criarContaPessoaJuridica(int value, Cliente cliente) {
+		switch (value) {
+			case 3:
+				ContaCorrentePessoaJuridica ccpj = CriarConta.criarContaPj(cliente);
+				break;
+			case 0:
+				System.out.println("Saindo");;
+				break;	
+			default: 
+				System.out.println("Opção informada inválida!");
+		}
+	}
+	
+	public static int menuInformarCriarConta(String value, int opt) {
 		Scanner scan = new Scanner(System.in);
 		
 		System.out.println("\n" + value + ", escolha uma das opções abaixo:\n");
@@ -50,9 +84,11 @@ public class Program {
 		System.out.println("0 - Sair");
 		
 		int op2 = scan.nextInt();
+		scan.close();
+		return op2;
 	}
 	
-	public static void cadastrarCliente(int value) {
+	public static Cliente cadastrarCliente(int value) {
 		Scanner scan = new Scanner(System.in);
 		switch (value) {
 			case 1:
@@ -61,17 +97,21 @@ public class Program {
 				String nomeFormatado = formatarNome(nome);
 				System.out.print("\n" + nomeFormatado + ", digite o seu CPF: ");
 				String cpf = scan.nextLine();
-				ClientePessoaFisica clientePf = CriarCilente.criarClientePf(nome, cpf);
-				menuCriarConta(nomeFormatado, value);
-				break;
+				Cliente clientePf = CriarCilente.criarClientePf(nome, cpf);
+				int opcao = menuInformarCriarConta(nomeFormatado, value);
+				criarContaPessoaFisica(opcao, clientePf);
+				scan.close();
+				return clientePf;
 			case 2:
 				System.out.print("Digite o nome da empresa: ");
 				String nomeEmpresa = scan.nextLine();
 				System.out.print("\nDigite o CNPJ da empresa " + nomeEmpresa + ": ");
 				String cnpj = scan.nextLine();
-				ClientePessoaJuridica clientePj = CriarCilente.criarClientePj(nomeEmpresa, cnpj);
-				menuCriarConta(nomeEmpresa, value);
-				break;
+				Cliente clientePj = CriarCilente.criarClientePj(nomeEmpresa, cnpj);
+				opcao = menuInformarCriarConta(nomeEmpresa, value);
+				criarContaPessoaJuridica(opcao, clientePj);
+				scan.close();
+				return clientePj;
 			case 0:
 				System.out.println("Saindo");
 				break;
@@ -79,6 +119,7 @@ public class Program {
 				System.out.println("Opção informada inválida!");
 				break;
 		}
+		return null;
 	}
 	
 	public static void menuCadastrarCliente() {
@@ -92,5 +133,39 @@ public class Program {
 		String[] vetor = value.split(" ");
 		String nome = vetor[0];
 		return nome;
+	}
+	
+	public static void informarContaCriada(Cliente cliente, Conta conta) {
+		Banco banco = new Banco();
+		System.out.println("\n==========================================================\n");
+		System.out.println("\t\t  " + banco.getNOME());
+		System.out.println("\n==========================================================\n");
+		System.out.println("\nNúmero da conta: " + conta.getNumeroConta());
+	}
+	
+	public static String formatarCpf(String value) {
+		String traco = "-";
+		String ponto = ".";
+		String[] cpf = value.split("");
+		String[] vetor = new String[14];
+		
+		int cont = 0;
+		for (int i = 0; i < vetor.length; i++) {
+			
+			if (i == 3 || i == 7) {
+				vetor[i] = ponto;
+				continue;
+			}
+			
+			if (i == 11) {
+				vetor[i] = traco;
+				continue;
+			}
+			vetor[i] = cpf[cont];
+			cont++;
+		}
+		
+		String cpfFormatado = Arrays.stream(vetor).collect(Collectors.joining());;
+		return cpfFormatado;
 	}
 }

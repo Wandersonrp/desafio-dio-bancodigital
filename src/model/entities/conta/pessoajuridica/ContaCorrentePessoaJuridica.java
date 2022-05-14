@@ -45,7 +45,7 @@ public class ContaCorrentePessoaJuridica extends Conta {
 		sb.append("\nAgência: " + conta.getAGENCIA());
 		sb.append("\nConta: " + numConta);
 		sb.append("\nCliente: " + cliente.getNome());
-		sb.append("\nCPF: " + cliente.getCnpj());
+		sb.append("\nCPF: " + cliente.getDocumento());
 		sb.append("\nSaldo: R$ " + String.format("%.2f", conta.getSaldo()));
 		sb.append("\n==========================================================");
 		return sb.toString();
