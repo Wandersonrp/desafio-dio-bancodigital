@@ -165,7 +165,7 @@ public class Program {
 			cont++;
 		}
 		
-		String cpfFormatado = Arrays.stream(vetor).collect(Collectors.joining());;
+		String cpfFormatado = Arrays.stream(vetor).collect(Collectors.joining());
 		return cpfFormatado;
 	}
 }
