@@ -216,11 +216,11 @@ public class Program {
 	}
 	
 	public static void acessarContas(List<Conta> list) {
+		System.out.println("==========================================================\n");
+		System.out.println("\nLista de contas no Banco +Plus Bank\n");
+		System.out.println("==========================================================\n");
 		for (Conta c : list) {
-			System.out.println("==========================================================\n");
-			System.out.println("\nLista de contas no Banco +Plus Bank\n");
-			System.out.println("==========================================================\n");
-			System.out.println(c);
+			System.out.println(c + "\n");
 			System.out.println("==========================================================\n");
 		}
 	}
