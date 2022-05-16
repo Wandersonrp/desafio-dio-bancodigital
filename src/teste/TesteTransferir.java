@@ -17,10 +17,10 @@ public class TesteTransferir {
 		// transferir sem saldo (dispara TransferirException)
 		System.out.println("\n=== Teste 01 Transferir ===\n");
 		ClientePessoaFisica clientePf = new ClientePessoaFisica("Ana", "000.000.000-00");
-		ContaCorrentePessoaFisica ccpf = new ContaCorrentePessoaFisica(clientePf);
+		ContaCorrentePessoaFisica ccpf = new ContaCorrentePessoaFisica(clientePf, banco);
 		
 		ClientePessoaFisica clientePf2 = new ClientePessoaFisica("Maria", "000.000.000-00");
-		ContaCorrentePessoaFisica ccpf2 = new ContaCorrentePessoaFisica(clientePf2);
+		ContaCorrentePessoaFisica ccpf2 = new ContaCorrentePessoaFisica(clientePf2, banco);
 		try {
 			ccpf.transferir(300.00, ccpf2);
 		}
@@ -38,10 +38,10 @@ public class TesteTransferir {
 		// transferir com saldo, porém valor de tranferência negativo (dispara TransferirException)
 		System.out.println("\n=== Teste 02 Transferir ===\n");
 		ClientePessoaFisica clientePf3 = new ClientePessoaFisica("João", "000.000.000-00");
-		ContaCorrentePessoaFisica ccpf3 = new ContaCorrentePessoaFisica(clientePf3);
+		ContaCorrentePessoaFisica ccpf3 = new ContaCorrentePessoaFisica(clientePf3, banco);
 		
 		ClientePessoaFisica clientePf4 = new ClientePessoaFisica("Alex", "000.000.000-00");
-		ContaCorrentePessoaFisica ccpf4 = new ContaCorrentePessoaFisica(clientePf4);
+		ContaCorrentePessoaFisica ccpf4 = new ContaCorrentePessoaFisica(clientePf4, banco);
 		try {
 			ccpf3.depositar(500d);
 			ccpf3.transferir(-200d, ccpf4);
@@ -60,7 +60,7 @@ public class TesteTransferir {
 		// transferir com conta de destino null (dispara TransferirException)
 		System.out.println("\n=== Teste 03 Transferir ===\n");
 		ClientePessoaFisica clientePf5 = new ClientePessoaFisica("Mario", "000.000.000-00");
-		ContaCorrentePessoaFisica ccpf5 = new ContaCorrentePessoaFisica(clientePf5);
+		ContaCorrentePessoaFisica ccpf5 = new ContaCorrentePessoaFisica(clientePf5, banco);
 		try {
 			ccpf5.depositar(500d);
 			ccpf5.transferir(200d, null);
@@ -76,10 +76,10 @@ public class TesteTransferir {
 		// transferir sem exception
 		System.out.println("\n=== Teste 04 Transferir ===\n");
 		ClientePessoaFisica clientePf6 = new ClientePessoaFisica("Igor", "000.000.000-00");
-		ContaCorrentePessoaFisica ccpf6 = new ContaCorrentePessoaFisica(clientePf6);
+		ContaCorrentePessoaFisica ccpf6 = new ContaCorrentePessoaFisica(clientePf6, banco);
 		
 		ClientePessoaFisica clientePf7 = new ClientePessoaFisica("Caio", "000.000.000-00");
-		ContaCorrentePessoaFisica ccpf7 = new ContaCorrentePessoaFisica(clientePf7);
+		ContaCorrentePessoaFisica ccpf7 = new ContaCorrentePessoaFisica(clientePf7, banco);
 		
 		try {
 			ccpf6.depositar(1000d);

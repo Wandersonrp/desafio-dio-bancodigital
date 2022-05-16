@@ -1,5 +1,6 @@
 package model.entities.conta;
 
+import model.entities.Banco;
 import model.entities.cliente.Cliente;
 import model.entities.conta.pessoafisica.ContaCorrentePessoaFisica;
 import model.entities.exception.SaqueException;
@@ -7,8 +8,8 @@ import model.entities.exception.TransferirException;
 
 public class ContaPoupanca extends ContaCorrentePessoaFisica{
 	
-	public ContaPoupanca(Cliente cliente) {
-		super(cliente);
+	public ContaPoupanca(Cliente cliente, Banco banco) {
+		super(cliente, banco);
 	}
 
 	@Override
@@ -31,5 +32,15 @@ public class ContaPoupanca extends ContaCorrentePessoaFisica{
 	@Override
 	public void depositar(Double valor) {
 		saldo += valor;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Conta poupança");
+		sb.append("\nAgência: " + AGENCIA);
+		sb.append("\nNúmero da Conta: " + numeroConta);
+		sb.append("\nCliente: " + cliente.getNome());
+		return sb.toString();
 	}
 }

@@ -9,10 +9,10 @@ import model.entities.exception.TransferirException;
 
 public class ContaCorrentePessoaFisica extends Conta {
 
-	public ContaCorrentePessoaFisica(Cliente cliente) {
-		super(cliente);
+	public ContaCorrentePessoaFisica(Cliente cliente, Banco banco) {
+		super(cliente, banco);
 	}
-	
+
 	@Override
 	public void depositar(Double valor) {
 		saldo += valor;
@@ -48,6 +48,16 @@ public class ContaCorrentePessoaFisica extends Conta {
 		sb.append("\nCPF: " + cliente.getDocumento());
 		sb.append("\nSaldo: R$ " + String.format("%.2f", conta.getSaldo()));
 		sb.append("\n==========================================================");
+		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Conta corrente pessoa física");
+		sb.append("\nAgência: " + AGENCIA);
+		sb.append("\nNúmero da Conta: " + numeroConta);
+		sb.append("\nCliente: " + cliente.getNome());
 		return sb.toString();
 	}
 }

@@ -16,12 +16,13 @@ public abstract class Conta implements ContaInterface {
 	
 	protected Banco banco;
 	
-	public Conta(Cliente cliente) {
+	public Conta(Cliente cliente, Banco banco) {
 		NumeroConta numero = new NumeroConta();
 		this.numConta = numero.gerarNumeroConta();
 		this.numeroConta = AGENCIA + numConta;
 		this.saldo = 0d;
 		this.cliente = cliente;
+		this.banco = banco;
 	}
 	
 	public String getAGENCIA() {

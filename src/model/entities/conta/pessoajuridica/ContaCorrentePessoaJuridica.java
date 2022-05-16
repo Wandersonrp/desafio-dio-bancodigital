@@ -9,8 +9,9 @@ import model.entities.exception.TransferirException;
 
 public class ContaCorrentePessoaJuridica extends Conta {
 	
-	public ContaCorrentePessoaJuridica(Cliente cliente) {
-		super(cliente);
+	public ContaCorrentePessoaJuridica(Cliente cliente, Banco banco) {
+		super(cliente, banco);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override

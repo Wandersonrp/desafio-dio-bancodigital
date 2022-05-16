@@ -7,9 +7,12 @@ import model.entities.conta.Conta;
 
 public class Banco {
 
-	private final String NOME = "+Plus Digital BANK";
+	private String NOME = "+Plus Digital BANK";
 	
 	private List<Conta> conta = new ArrayList<>();
+
+	public Banco() {
+	}
 
 	public String getNOME() {
 		return NOME;
@@ -19,7 +22,7 @@ public class Banco {
 		return conta;
 	}
 
-	public void setConta(Conta conta) {
-		this.conta.add(conta);
+	public void setConta(List<Conta> conta) {
+		this.conta = conta;
 	}
 }

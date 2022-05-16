@@ -1,7 +1,9 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -17,37 +19,42 @@ import model.services.criarconta.CriarConta;
 
 public class Program {
 
+	private static Banco banco = new Banco();
+	private static List<Conta> conta = new ArrayList<>();
+	
 	public static void main(String[] args) {
 		
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 		
 		Banco banco = new Banco();
-		
+	
 		menuCadastrarCliente();
 		
 		int opcao = sc.nextInt();
 		
 		cadastrarCliente(opcao);
 		
+		acessarContas(conta);
+		
 		
 	}
 	
-	public static Conta  criarContaPessoaFisica(int value, Cliente cliente) {
+	public static Conta  criarContaPessoaFisica(int value, Cliente cliente) throws InputMismatchException{
+		
 		switch (value) {
 			case 1:
-				ContaCorrentePessoaFisica ccpf = CriarConta.criarContaPf(cliente);
-				String nome = formatarNome(cliente.getNome());
-				System.out.println("\nParabéns, " + nome + "!\n"
+				ContaCorrentePessoaFisica ccpf = CriarConta.criarContaPf(cliente, banco);
+				System.out.println("\nParabéns, " + cliente.getNomeFormatado() + "!\n"
 						+ "Conta Corrente criada com sucesso!");
+				conta.add(ccpf);
 				informarContaCriada(cliente, ccpf);
-				System.out.println("\nCPF: " + cliente.getDocumento());
 				return ccpf;
 			case 2:
-				ContaPoupanca cpoupanca = CriarConta.criarContaPoupanca(cliente);
-				nome = formatarNome(cliente.getNome());
-				System.out.println("\nParabéns, " + nome + "!\n"
+				ContaPoupanca cpoupanca = CriarConta.criarContaPoupanca(cliente, banco);
+				System.out.println("\nParabéns, " + cliente.getNomeFormatado() + "!\n"
 						+ "Conta Poupança criada com sucesso!");
+				conta.add(cpoupanca);
 				informarContaCriada(cliente, cpoupanca);
 				return cpoupanca;
 			case 0:
@@ -59,10 +66,14 @@ public class Program {
 		return null;
 	}
 	
-	public static void criarContaPessoaJuridica(int value, Cliente cliente) {
+	public static void criarContaPessoaJuridica(int value, Cliente cliente) throws InputMismatchException {
 		switch (value) {
 			case 3:
-				ContaCorrentePessoaJuridica ccpj = CriarConta.criarContaPj(cliente);
+				ContaCorrentePessoaJuridica ccpj = CriarConta.criarContaPj(cliente, banco);
+				System.out.println("\nParabéns, " + cliente.getNome() + "!\n"
+						+ "Conta Corrente Pessoa Jurídica criada com sucesso!");
+				conta.add(ccpj);
+				informarContaCriada(cliente, ccpj);
 				break;
 			case 0:
 				System.out.println("Saindo");
@@ -72,10 +83,9 @@ public class Program {
 		}
 	}
 	
-	public static int menuInformarCriarConta(Cliente cliente, int opt) {
+	public static Integer menuInformarCriarConta(Cliente cliente, int opt) {
 		Scanner scan = new Scanner(System.in);
-		
-		System.out.println("\n" + cliente.getNome() + ", escolha uma das opções abaixo:\n");
+		System.out.println("\n" + cliente.getNomeFormatado() + ", para criar uma conta escolha uma das opções abaixo:\n");
 		if (opt == 1) {
 			System.out.println("1 - Criar conta corrente");
 			System.out.println("2 - Criar conta poupança");
@@ -85,10 +95,14 @@ public class Program {
 		}
 	
 		System.out.println("0 - Sair");
-		
-		int op2 = scan.nextInt();
-		scan.close();
-		return op2;
+		try {
+			 int op2 = scan.nextInt();
+			 scan.close();
+			 return op2;
+		} catch (InputMismatchException e) {
+			System.out.println("Digite somente o número de acordo com as opções!");
+		}
+		return null;
 	}
 	
 	public static Cliente cadastrarCliente(int value) throws InputMismatchException {
@@ -102,6 +116,7 @@ public class Program {
 				String cpf = scan.nextLine();
 				String cpfFormatado = formatarCpf(cpf);
 				Cliente clientePf = CriarCliente.criarClientePf(nome, cpfFormatado);
+				clientePf.setNomeFormatado(nomeFormatado);
 				int opt = menuInformarCriarConta(clientePf, value);
 				criarContaPessoaFisica(opt, clientePf);
 				scan.close();
@@ -142,7 +157,10 @@ public class Program {
 		System.out.println("\n==========================================================\n");
 		System.out.println("\t\t  " + banco.getNOME());
 		System.out.println("\n==========================================================\n");
+		System.out.println("\nCliente: " + cliente.getNome());
+		System.out.println("\nCPF: " + cliente.getDocumento());
 		System.out.println("\nNúmero da conta: " + conta.getNumeroConta());
+		System.out.println("\nSaldo: R$ " + String.format("%.2f", conta.getSaldo()));
 	}
 	
 	public static String formatarCpf(String value) {
@@ -195,5 +213,15 @@ public class Program {
 		}
 		String cnpjFormatado = Arrays.stream(vetor).collect(Collectors.joining());
 		return cnpjFormatado;
+	}
+	
+	public static void acessarContas(List<Conta> list) {
+		for (Conta c : list) {
+			System.out.println("==========================================================\n");
+			System.out.println("\nLista de contas no Banco +Plus Bank\n");
+			System.out.println("==========================================================\n");
+			System.out.println(c);
+			System.out.println("==========================================================\n");
+		}
 	}
 }

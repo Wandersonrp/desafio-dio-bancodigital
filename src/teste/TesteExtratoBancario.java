@@ -18,20 +18,20 @@ public class TesteExtratoBancario {
 		
 		System.out.println("=== Teste 01: Extrato bancário Conta Corrente Pessoa Física: ===\n");
 		ClientePessoaFisica cliente  = new ClientePessoaFisica("Alex", "000.000.000.00");
-		ContaCorrentePessoaFisica ccpf = new ContaCorrentePessoaFisica(cliente);
+		ContaCorrentePessoaFisica ccpf = new ContaCorrentePessoaFisica(cliente, banco);
 		String resultadoPesquisa = ccpf.extratoSaldoPessoaFisica(cliente, ccpf, banco);
 		System.out.println(resultadoPesquisa);
 		
 		System.out.println("\n=== Teste 02: Extrato bancário Conta Pessoa Jurídica: ===\n");
 		ClientePessoaJuridica clientePJ  = new ClientePessoaJuridica("Supermercado Compre Aqui",
 				"00.000.000/0001-00");
-		ContaCorrentePessoaJuridica ccpj = new ContaCorrentePessoaJuridica(cliente);
+		ContaCorrentePessoaJuridica ccpj = new ContaCorrentePessoaJuridica(cliente, banco);
 		resultadoPesquisa = ccpj.extratoSaldoPessoaJuridica(clientePJ, ccpj, banco);
 		System.out.println(resultadoPesquisa);
 		
 		System.out.println("\n=== Teste 03: Extrato bancário Conta Poupança: ===\n");
 		ClientePessoaFisica clientePoupanca = new ClientePessoaFisica("João", "000.000.000-00");
-		ContaPoupanca contaPoupanca = new ContaPoupanca(clientePoupanca);
+		ContaPoupanca contaPoupanca = new ContaPoupanca(clientePoupanca, banco);
 		resultadoPesquisa = contaPoupanca.extratoSaldoPessoaFisica(clientePoupanca, contaPoupanca, banco);
 		System.out.println(resultadoPesquisa);
 	}
