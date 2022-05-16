@@ -18,14 +18,14 @@ public class TesteDeposito {
 		ClientePessoaFisica clientePF = new ClientePessoaFisica("José", "000.000.000-00");
 		ContaCorrentePessoaFisica ccpf = new ContaCorrentePessoaFisica(clientePF, banco);
 		ccpf.depositar(500d);
-		String resultado = ccpf.extratoSaldoPessoaFisica(clientePF, ccpf, banco);
+		String resultado = ccpf.obterExtrato(clientePF, ccpf, banco);
 		System.out.println(resultado);
 		
 		System.out.println("\n=== Teste 02 Depósito ===\n");
 		ClientePessoaFisica clientePF2 = new ClientePessoaFisica("Alex", "000.000.000-00");
 		ContaPoupanca contaPoupanca = new ContaPoupanca(clientePF2, banco);
 		contaPoupanca.depositar(500d);
-		String resultado2 = contaPoupanca.extratoSaldoPessoaFisica(clientePF2, contaPoupanca, banco);
+		String resultado2 = contaPoupanca.obterExtrato(clientePF2, contaPoupanca, banco);
 		System.out.println(resultado2);
 	}
 }

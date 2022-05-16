@@ -28,10 +28,10 @@ public class TesteTransferir {
 			e.printStackTrace();
 		} 
 		finally {
-			String resultadoCcpf = ccpf.extratoSaldoPessoaFisica(clientePf, ccpf, banco);
+			String resultadoCcpf = ccpf.obterExtrato(clientePf, ccpf, banco);
 			System.out.println(resultadoCcpf);
 			System.out.println();
-			String resultadoCcpf2 = ccpf2.extratoSaldoPessoaFisica(clientePf2, ccpf2, banco);
+			String resultadoCcpf2 = ccpf2.obterExtrato(clientePf2, ccpf2, banco);
 			System.out.println(resultadoCcpf2);
 		}
 		
@@ -50,10 +50,10 @@ public class TesteTransferir {
 			e.printStackTrace();
 		} 
 		finally {
-			String resultadoCcpf3 = ccpf3.extratoSaldoPessoaFisica(clientePf3, ccpf3, banco);
+			String resultadoCcpf3 = ccpf3.obterExtrato(clientePf3, ccpf3, banco);
 			System.out.println(resultadoCcpf3);
 			System.out.println();
-			String resultadoCcpf4 = ccpf4.extratoSaldoPessoaFisica(clientePf4, ccpf4, banco);
+			String resultadoCcpf4 = ccpf4.obterExtrato(clientePf4, ccpf4, banco);
 			System.out.println(resultadoCcpf4);
 		}
 		
@@ -69,7 +69,7 @@ public class TesteTransferir {
 			e.printStackTrace();
 		}
 		finally {
-			String resultadoCcpf5 = ccpf5.extratoSaldoPessoaFisica(clientePf5, ccpf5, banco);
+			String resultadoCcpf5 = ccpf5.obterExtrato(clientePf5, ccpf5, banco);
 			System.out.println(resultadoCcpf5);
 		}
 		
@@ -89,10 +89,10 @@ public class TesteTransferir {
 			e.printStackTrace();
 		}
 		finally {
-			String resultadoCcpf6 = ccpf6.extratoSaldoPessoaFisica(clientePf6, ccpf6, banco);
+			String resultadoCcpf6 = ccpf6.obterExtrato(clientePf6, ccpf6, banco);
 			System.out.println(resultadoCcpf6);
 			System.out.println();
-			String resultadoCcpf7 = ccpf7.extratoSaldoPessoaFisica(clientePf7, ccpf7, banco);
+			String resultadoCcpf7 = ccpf7.obterExtrato(clientePf7, ccpf7, banco);
 			System.out.println(resultadoCcpf7);
 		}
 	}

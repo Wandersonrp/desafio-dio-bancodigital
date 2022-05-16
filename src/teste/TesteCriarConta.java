@@ -23,7 +23,7 @@ public class TesteCriarConta {
 				"00.000.000/0001-00");
 		ContaCorrentePessoaJuridica ccpj = CriarConta.criarContaPj(clientePj, banco);
 		ccpj.depositar(500d);
-		String result = ccpj.extratoSaldoPessoaJuridica(clientePj, ccpj, banco);
+		String result = ccpj.obterExtrato(clientePj, ccpj, banco);
 		System.out.println(result);
 		
 		System.out.println("\n=== Teste 02 CriarContaPf ===");
@@ -32,10 +32,9 @@ public class TesteCriarConta {
 		ContaCorrentePessoaFisica ccpf = CriarConta.criarContaPf(clientePf, banco);
 		ccpf.depositar(200d);
 		ccpf.transferir(100d, ccpj);
-		result = ccpf.extratoSaldoPessoaFisica(clientePf, ccpf, banco);
-		System.out.println(result);
+		result = ccpf.obterExtrato(clientePf, ccpf, banco);
 		
-		result = ccpj.extratoSaldoPessoaJuridica(clientePj, ccpj, banco);
+		result = ccpj.obterExtrato(clientePj, ccpj, banco);
 		System.out.println();
 		System.out.println(result);
 		
@@ -43,7 +42,7 @@ public class TesteCriarConta {
 		ClientePessoaFisica clientePoupanca = new ClientePessoaFisica("Ana", "000.000.000-00");
 		ContaPoupanca contaPoupanca = CriarConta.criarContaPoupanca(clientePoupanca, banco);
 		contaPoupanca.depositar(1500d);
-		result = contaPoupanca.extratoSaldoPessoaFisica(clientePoupanca, contaPoupanca, banco);
+		result = contaPoupanca.obterExtrato(clientePoupanca, contaPoupanca, banco);
 		System.out.println(result);
 	}
 }

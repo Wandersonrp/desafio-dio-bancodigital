@@ -22,7 +22,7 @@ public class TesteSaque {
 			ContaCorrentePessoaFisica ccpf = new ContaCorrentePessoaFisica(clientePf, banco);
 		try {	
 			ccpf.sacar(200d);
-			resultado = ccpf.extratoSaldoPessoaFisica(clientePf, ccpf, banco);
+			resultado = ccpf.obterExtrato(clientePf, ccpf, banco);
 			System.out.println(resultado);
 		} catch (SaqueException e) {
 			e.printStackTrace();
@@ -33,7 +33,7 @@ public class TesteSaque {
 			ContaCorrentePessoaFisica ccpf2 = new ContaCorrentePessoaFisica(clientePf2, banco);
 			ccpf2.depositar(600d);
 			ccpf2.sacar(200d);
-			resultado = ccpf2.extratoSaldoPessoaFisica(clientePf2, ccpf2, banco);
+			resultado = ccpf2.obterExtrato(clientePf2, ccpf2, banco);
 			System.out.println(resultado);
 		}
 		
@@ -43,7 +43,7 @@ public class TesteSaque {
 		ContaCorrentePessoaFisica ccpf3 = new ContaCorrentePessoaFisica(clientePf3, banco);
 		ccpf3.depositar(600d);
 		ccpf3.sacar(1000d);
-		resultado = ccpf.extratoSaldoPessoaFisica(clientePf3, ccpf3, banco);
+		resultado = ccpf.obterExtrato(clientePf3, ccpf3, banco);
 		System.out.println(resultado);
 	}
 }

@@ -35,20 +35,4 @@ public class ContaCorrentePessoaJuridica extends Conta {
 	public void depositar(Double valor) {
 		saldo += valor;
 	}
-	
-	public String extratoSaldoPessoaJuridica(ClientePessoaJuridica cliente, Conta conta, Banco banco) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("==========================================================\n");
-		sb.append("\t\t  " + banco.getNOME());
-		sb.append("\n==========================================================");
-		sb.append("\n================= EXTRATO BANCÁRIO =======================\n");
-		sb.append("\nNúmero da conta: " + conta.getNumeroConta());
-		sb.append("\nAgência: " + conta.getAGENCIA());
-		sb.append("\nConta: " + numConta);
-		sb.append("\nCliente: " + cliente.getNome());
-		sb.append("\nCPF: " + cliente.getDocumento());
-		sb.append("\nSaldo: R$ " + String.format("%.2f", conta.getSaldo()));
-		sb.append("\n==========================================================");
-		return sb.toString();
-	}
 }
