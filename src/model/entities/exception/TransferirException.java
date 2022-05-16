@@ -24,7 +24,7 @@ public class TransferirException extends RuntimeException {
 					+ String.format("%.2f", valor) + ")!");
 		}
 		if (contaDestino == null) {
-			throw new TransferirException("Impossível realizar a operação de transferência! A conta informada é inválida!");
+			throw new TransferirException("Impossível realizar a operação de transferência! A conta de destino é inválida!");
 		}
 	}
 }

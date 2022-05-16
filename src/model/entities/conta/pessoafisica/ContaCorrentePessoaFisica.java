@@ -24,7 +24,7 @@ public class ContaCorrentePessoaFisica extends Conta {
 		double valorTaxaSaque = valor + taxaSaque;
 		SaqueException saqueException = new SaqueException();
 		saqueException.exceptionSaque(saldo, valor, taxaSaque, valorTaxaSaque);
-		saldo -= valor + taxaSaque;
+		saldo -= valorTaxaSaque;
 	}
 
 	@Override

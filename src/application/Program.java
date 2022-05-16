@@ -5,18 +5,17 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Locale;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import model.entities.Banco;
 import model.entities.cliente.Cliente;
-import model.entities.cliente.ClientePessoaFisica;
 import model.entities.conta.Conta;
-import model.entities.conta.ContaInterface;
 import model.entities.conta.ContaPoupanca;
 import model.entities.conta.pessoafisica.ContaCorrentePessoaFisica;
 import model.entities.conta.pessoajuridica.ContaCorrentePessoaJuridica;
+import model.entities.exception.SaqueException;
+import model.entities.exception.TransferirException;
 import model.services.criarconta.CriarCliente;
 import model.services.criarconta.CriarConta;
 
@@ -24,25 +23,22 @@ public class Program {
 
 	private static Banco banco = new Banco();
 	private static List<Conta> conta = new ArrayList<>();
+	private static Scanner scan = new Scanner(System.in);
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InputMismatchException {
 		
 		Locale.setDefault(Locale.US);
-		Scanner sc = new Scanner(System.in);
 		
-		Banco banco = new Banco();
-	
-		menuCadastrarCliente();
+		int opcao = 0;
 		
-		int opcao = sc.nextInt();
-		
-		cadastrarCliente(opcao);
+		do {
+			menuCadastrarCliente();
+			opcao = scan.nextInt();
+			cadastrarCliente(opcao);
+		} while(opcao != 0);
 		
 		//acessarContas(conta);
-		
-		
-		
-		sc.close();
+		scan.close();
 	}
 	
 	public static Conta  criarContaPessoaFisica(int value, Cliente cliente) {
@@ -56,7 +52,7 @@ public class Program {
 				informarContaCriada(cliente, ccpf);
 				menuAcoesConta(ccpf);
 				int opt = scan.nextInt();
-				escolherAcoesConta(opt, cliente, ccpf);
+				escolherAcoesConta(opt, cliente, ccpf, null);
 				return ccpf;
 			case 2:
 				ContaPoupanca cpoupanca = CriarConta.criarContaPoupanca(cliente, banco);
@@ -64,6 +60,9 @@ public class Program {
 						+ "Conta Poupança criada com sucesso!");
 				conta.add(cpoupanca);
 				informarContaCriada(cliente, cpoupanca);
+				menuAcoesConta(cpoupanca);
+				opt = scan.nextInt();
+				escolherAcoesConta(opt, cliente, cpoupanca, null);
 				return cpoupanca;
 			case 0:
 				System.out.println("Saindo");
@@ -82,6 +81,9 @@ public class Program {
 						+ "Conta Corrente Pessoa Jurídica criada com sucesso!");
 				conta.add(ccpj);
 				informarContaCriada(cliente, ccpj);
+				menuAcoesConta(ccpj);
+				int opt = scan.nextInt();
+				escolherAcoesConta(opt, cliente, ccpj, null);
 				return ccpj;
 			case 0:
 				System.out.println("Saindo");
@@ -93,7 +95,6 @@ public class Program {
 	}
 	
 	public static Integer menuInformarCriarConta(Cliente cliente, int opt) {
-		Scanner scan = new Scanner(System.in);
 		if (opt == 1) {
 			System.out.println("\n" + cliente.getNomeFormatado() + ", para criar uma conta escolha uma das opções abaixo:\n");
 			System.out.println("1 - Criar conta corrente");
@@ -111,15 +112,14 @@ public class Program {
 		} catch (InputMismatchException e) {
 			System.out.println("Digite somente o número de acordo com as opções!");
 		}
-		scan.close();
 		return null;
 	}
 	
 	public static Cliente cadastrarCliente(int value) throws InputMismatchException {
-		Scanner scan = new Scanner(System.in);
 		switch (value) {
 			case 1:
-				System.out.print("Digite o seu nome completo: ");
+				System.out.print("\nDigite o seu nome completo: ");
+				scan.nextLine();
 				String nome = scan.nextLine();
 				String nomeFormatado = formatarNome(nome);
 				System.out.print("\n" + nomeFormatado + ", digite o seu CPF (somente números): ");
@@ -129,17 +129,16 @@ public class Program {
 				clientePf.setNomeFormatado(nomeFormatado);
 				int opt = menuInformarCriarConta(clientePf, value);
 				criarContaPessoaFisica(opt, clientePf);
-				scan.close();
 				return clientePf;
 			case 2:
-				System.out.print("Digite o nome da empresa: ");
+				System.out.print("\nDigite o nome da empresa: ");
+				scan.nextLine();
 				String nomeEmpresa = scan.nextLine();
 				System.out.print("\nDigite o CNPJ da empresa " + nomeEmpresa + ": ");
 				String cnpj = scan.nextLine();
 				String cnpjFormatado = formatarCnpj(cnpj);
 				Cliente clientePj = CriarCliente.criarClientePj(nomeEmpresa, cnpjFormatado);
 				opt = menuInformarCriarConta(clientePj, value);
-				scan.close();
 				criarContaPessoaJuridica(opt, clientePj);
 				return clientePj;
 			case 0:
@@ -149,12 +148,11 @@ public class Program {
 				System.out.println("Opção informada inválida!");
 				break;
 		}
-		scan.close();
 		return null;
 	}
 	
 	public static void menuCadastrarCliente() {
-		System.out.println("Bem-vindo ao atendimento +PlusBank!\nEscolha uma das opções para se cadastrar:\n");
+		System.out.println("\nBem-vindo ao atendimento +PlusBank!\nEscolha uma das opções para se cadastrar:\n");
 		System.out.println("1 - Pessoa física");
 		System.out.println("2 - Pessoa jurídica");
 		System.out.println("0 - Sair");
@@ -172,20 +170,13 @@ public class Program {
 		System.out.println("\t\t  " + banco.getNOME());
 		System.out.println("\n==========================================================\n");
 		System.out.println("\nCliente: " + cliente.getNome());
-		System.out.println("\nCPF: " + cliente.getDocumento());
+		if (cliente.getDocumento().length() == 14 ) {
+			System.out.println("\nCPF: " + cliente.getDocumento());
+		} else {
+			System.out.println("\nCNPJ: " + cliente.getDocumento());
+		}
 		System.out.println("\nNúmero da conta: " + conta.getNumeroConta());
 		System.out.println("\nSaldo: R$ " + String.format("%.2f", conta.getSaldo()) + "\n");
-	}
-	
-	public static void informarContaCriadaPj(Cliente cliente, Conta conta) {
-		Banco banco = new Banco();
-		System.out.println("\n==========================================================\n");
-		System.out.println("\t\t  " + banco.getNOME());
-		System.out.println("\n==========================================================\n");
-		System.out.println("\nCliente: " + cliente.getNome());
-		System.out.println("\nCNPJ: " + cliente.getDocumento());
-		System.out.println("\nNúmero da conta: " + conta.getNumeroConta());
-		System.out.println("\nSaldo: R$ " + String.format("%.2f", conta.getSaldo()));
 	}
 	
 	public static String formatarCpf(String value) {
@@ -252,7 +243,11 @@ public class Program {
 	
 	public static void menuAcoesConta(Conta conta) {
 		System.out.println("==========================================================\n");
-		System.out.println("\n" + conta.getCliente().getNome() + ", escolha uma das opções a seguir: ");
+		if (conta.getCliente().getDocumento().length() == 14) {
+			System.out.println("\n" + conta.getCliente().getNomeFormatado() + ", escolha uma das opções a seguir: ");
+		} else {
+			System.out.println("\n" + conta.getCliente().getNome() + ", escolha uma das opções a seguir: ");
+		}
 		System.out.println("1 - Depositar ");
 		System.out.println("2 - Sacar ");
 		System.out.println("3 - Transferir ");
@@ -260,8 +255,7 @@ public class Program {
 		System.out.println("0 - Sair");
 	}
 	
-	public static void escolherAcoesConta(int value, Cliente cliente, Conta conta) {
-		Scanner scan = new Scanner(System.in);
+	public static void escolherAcoesConta(int value, Cliente cliente, Conta conta, Conta contaDestino) {
 		double valor = 0.0;
 		int opcao = 0;
 		do {
@@ -274,12 +268,21 @@ public class Program {
 				case 2:
 					System.out.println("\nDigite o valor a sacar: ");
 					valor = scan.nextDouble();
-					conta.sacar(valor);
+					System.out.println("\nTaxa de saque R$ 5.00\n");
+					try {
+						conta.sacar(valor);
+					} catch (SaqueException e) {
+						System.out.println(e.getMessage());
+					} 
 					break;
 				case 3:
 					System.out.println("\nDigite o valor a ser transferido: ");
 					valor = scan.nextDouble();
-					conta.transferir(valor, null);
+					try {
+						conta.transferir(valor, contaDestino);
+					} catch (TransferirException e) {
+						System.out.println(e.getMessage());
+					}
 					break;
 				case 4:
 					String extrato = conta.obterExtrato(cliente, conta, banco);
@@ -300,7 +303,5 @@ public class Program {
 			}
 			
 		} while (opcao != 2);
-		
-		scan.close();
 	}
 }
