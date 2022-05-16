@@ -5,6 +5,7 @@ import model.entities.conta.Conta;
 public abstract class Cliente {
 	
 	protected String nome;
+	private String nomeFormatado;
 	protected String documento;
 	
 	protected Conta conta;
@@ -14,20 +15,28 @@ public abstract class Cliente {
 		this.documento = documento;
 	}
 	
-	public String getDocumento() {
-		return documento;
-	}
-
-	public void setDocumento(String documento) {
-		this.documento = documento;
-	}
-
 	public String getNome() {
 		return nome;
 	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	public String getNomeFormatado() {
+		return nomeFormatado;
+	}
+
+	public void setNomeFormatado(String nomeFormatado) {
+		this.nomeFormatado = nomeFormatado;
+	}
+
+	public String getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(String documento) {
+		this.documento = documento;
 	}
 
 	public Conta getConta() {

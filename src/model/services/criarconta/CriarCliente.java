@@ -4,7 +4,7 @@ import model.entities.cliente.Cliente;
 import model.entities.cliente.ClientePessoaFisica;
 import model.entities.cliente.ClientePessoaJuridica;
 
-public class CriarCilente {
+public class CriarCliente {
 
 	public static Cliente criarClientePf(String nome, String cpf) {
 		return new ClientePessoaFisica(nome, cpf);
