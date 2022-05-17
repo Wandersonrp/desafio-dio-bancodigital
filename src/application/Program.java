@@ -37,7 +37,6 @@ public class Program {
 			cadastrarCliente(opcao);
 		} while(opcao != 0);
 		
-		
 		//acessarContas(conta);
 		scan.close();
 	}
@@ -295,10 +294,12 @@ public class Program {
 						for (Conta c : contas) {
 							if (c.getCliente().getDocumento().equals(cpfFormatado)) {
 								conta.transferir(valor, c);
+								System.out.println(c.obterExtrato(c.getCliente(), c, banco));
 								break;
 							} else {
 								System.out.println("\nConta não encontrada!");
 							}
+							
 						}
 					} catch (TransferirException e) {
 						System.out.println(e.getMessage());
