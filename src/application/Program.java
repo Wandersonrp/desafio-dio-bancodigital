@@ -22,7 +22,7 @@ import model.services.criarconta.CriarConta;
 public class Program {
 
 	private static Banco banco = new Banco();
-	private static List<Conta> conta = new ArrayList<>();
+	private static List<Conta> contas = new ArrayList<>();
 	private static Scanner scan = new Scanner(System.in);
 	
 	public static void main(String[] args) throws InputMismatchException {
@@ -37,6 +37,7 @@ public class Program {
 			cadastrarCliente(opcao);
 		} while(opcao != 0);
 		
+		
 		//acessarContas(conta);
 		scan.close();
 	}
@@ -48,21 +49,21 @@ public class Program {
 				ContaCorrentePessoaFisica ccpf = CriarConta.criarContaPf(cliente, banco);
 				System.out.println("\nParabéns, " + cliente.getNomeFormatado() + "!\n"
 						+ "Conta Corrente criada com sucesso!");
-				conta.add(ccpf);
+				contas.add(ccpf);
 				informarContaCriada(cliente, ccpf);
 				menuAcoesConta(ccpf);
 				int opt = scan.nextInt();
-				escolherAcoesConta(opt, cliente, ccpf, null);
+				escolherAcoesConta(opt, cliente, ccpf);
 				return ccpf;
 			case 2:
 				ContaPoupanca cpoupanca = CriarConta.criarContaPoupanca(cliente, banco);
 				System.out.println("\nParabéns, " + cliente.getNomeFormatado() + "!\n"
 						+ "Conta Poupança criada com sucesso!");
-				conta.add(cpoupanca);
+				contas.add(cpoupanca);
 				informarContaCriada(cliente, cpoupanca);
 				menuAcoesConta(cpoupanca);
 				opt = scan.nextInt();
-				escolherAcoesConta(opt, cliente, cpoupanca, null);
+				escolherAcoesConta(opt, cliente, cpoupanca);
 				return cpoupanca;
 			case 0:
 				System.out.println("Saindo");
@@ -79,11 +80,11 @@ public class Program {
 				ContaCorrentePessoaJuridica ccpj = CriarConta.criarContaPj(cliente, banco);
 				System.out.println("\nParabéns, " + cliente.getNome() + "!\n"
 						+ "Conta Corrente Pessoa Jurídica criada com sucesso!");
-				conta.add(ccpj);
+				contas.add(ccpj);
 				informarContaCriada(cliente, ccpj);
 				menuAcoesConta(ccpj);
 				int opt = scan.nextInt();
-				escolherAcoesConta(opt, cliente, ccpj, null);
+				escolherAcoesConta(opt, cliente, ccpj);
 				return ccpj;
 			case 0:
 				System.out.println("Saindo");
@@ -255,7 +256,7 @@ public class Program {
 		System.out.println("0 - Sair");
 	}
 	
-	public static void escolherAcoesConta(int value, Cliente cliente, Conta conta, Conta contaDestino) {
+	public static void escolherAcoesConta(int value, Cliente cliente, Conta conta) {
 		double valor = 0.0;
 		int opcao = 0;
 		do {
@@ -278,8 +279,27 @@ public class Program {
 				case 3:
 					System.out.println("\nDigite o valor a ser transferido: ");
 					valor = scan.nextDouble();
+					System.out.println("\nContas adicionadas: ");
+				
+					for (Conta c : contas) {
+						if (c.getCliente().getDocumento().equals(conta.getCliente().getDocumento())) {
+							continue;
+						}
+						System.out.println(c.getCliente().getDocumento());
+					}
+					
+					System.out.println("\nDigite o CPF/CNPJ do titular conta de destino: ");
+					String cpf = scan.next();
+					String cpfFormatado = formatarCpf(cpf);
 					try {
-						conta.transferir(valor, contaDestino);
+						for (Conta c : contas) {
+							if (c.getCliente().getDocumento().equals(cpfFormatado)) {
+								conta.transferir(valor, c);
+								break;
+							} else {
+								System.out.println("\nConta não encontrada!");
+							}
+						}
 					} catch (TransferirException e) {
 						System.out.println(e.getMessage());
 					}
