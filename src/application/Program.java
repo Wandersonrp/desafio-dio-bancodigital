@@ -124,11 +124,16 @@ public class Program {
 				scan.nextLine();
 				String nome = scan.nextLine();
 				String nomeFormatado = formatarNome(nome);
-				System.out.print("\n" + nomeFormatado + ", digite o seu CPF (somente números): ");
-				String cpf = scan.nextLine();
-				String cpfFormatado = formatarCpf(cpf);
-				Cliente clientePf = CriarCliente.criarClientePf(nome, cpfFormatado);
+				
+				System.out.print("\n" + nomeFormatado 
+						+ ", digite um CPF válido (000.000.000-00):");
+				String cpf = scan.next();
+				boolean cpfVerificado = verificarCpf(cpf);
+				cpf = validarCpf(cpfVerificado, cpf);
+				
+				Cliente clientePf = CriarCliente.criarClientePf(nome, cpf);
 				clientePf.setNomeFormatado(nomeFormatado);
+				
 				int opt = menuInformarCriarConta(clientePf, value);
 				criarContaPessoaFisica(opt, clientePf);
 				return clientePf;
@@ -154,7 +159,8 @@ public class Program {
 	}
 	
 	public static void menuCadastrarCliente() {
-		System.out.println("Bem-vindo ao atendimento +PlusBank!\nEscolha uma das opções para se cadastrar:\n");
+		System.out.println("Bem-vindo ao atendimento +PlusBank!" 
+				+ "\nEscolha uma das opções para se cadastrar:\n");
 		System.out.println("1 - Pessoa física");
 		System.out.println("2 - Pessoa jurídica");
 		System.out.println("0 - Sair");
@@ -187,31 +193,7 @@ public class Program {
 		System.out.println("\nNúmero da conta: " + conta.getNumeroConta());
 		System.out.println("\nSaldo: R$ " + String.format("%.2f", conta.getSaldo()) + "\n");
 	}
-	
-	public static String formatarCpf(String value) {
-		String traco = "-";
-		String ponto = ".";
-		String[] cpf = value.split("");
-		String[] vetor = new String[14];
-		
-		int cont = 0;
-		for (int i = 0; i < vetor.length; i++) {
-			
-			if (i == 3 || i == 7) {
-				vetor[i] = ponto;
-				continue;
-			}
-			if (i == 11) {
-				vetor[i] = traco;
-				continue;
-			}
-			vetor[i] = cpf[cont];
-			cont++;
-		}
-		String cpfFormatado = Arrays.stream(vetor).collect(Collectors.joining());
-		return cpfFormatado;
-	}
-	
+
 	public static String formatarCnpj(String value) {
 		String traco = "-";
 		String ponto = ".";
@@ -299,13 +281,16 @@ public class Program {
 					
 					System.out.println("\nDigite o CPF/CNPJ do titular conta de destino: ");
 					String cpf = scan.next();
-					String cpfFormatado = formatarCpf(cpf);
+					boolean cpfVerificado = verificarCpf(cpf);
+					cpf = validarCpf(cpfVerificado, cpf);
+					
 					try {
 						for (Conta c : contas) {
-							if (c.getCliente().getDocumento().equals(cpfFormatado)) {
+							if (c.getCliente().getDocumento().equals(cpf)) {
 								conta.transferir(valor, c);
-								//System.out.println(c.obterExtrato(c.getCliente(), c, banco));
-								System.out.println("\n" + conta.getCliente().getNomeFormatado() + ", o valor de R$ " 
+
+								System.out.println("\n" + conta.getCliente().getNomeFormatado() 
+										+ ", o valor de R$ " 
 										+ String.format("%.2f", valor) + " foi transferido com sucesso para " 
 										+ c.getCliente().getNome() + ".");
 								break;
@@ -337,5 +322,24 @@ public class Program {
 			}
 			
 		} while (opcao != 2);
+	}
+	
+	public static boolean verificarCpf(String value) {
+		if (value.matches("\\d{3}.\\d{3}.\\d{3}-\\d{2}")) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static String validarCpf(boolean value, String cpf) {
+		do {
+			value = verificarCpf(cpf);
+			if (!value) {
+				System.out.println("\nCPF inválido! Digite um CPF válido (000.000.000-00):");
+				cpf = scan.next();
+			}
+		} while (!value);
+		
+		return cpf;
 	}
 }
