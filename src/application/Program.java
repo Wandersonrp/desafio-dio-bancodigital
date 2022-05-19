@@ -141,10 +141,14 @@ public class Program {
 				System.out.print("\nDigite o nome da empresa: ");
 				scan.nextLine();
 				String nomeEmpresa = scan.nextLine();
-				System.out.print("\nDigite o CNPJ da empresa " + nomeEmpresa + ": ");
-				String cnpj = scan.nextLine();
-				String cnpjFormatado = formatarCnpj(cnpj);
-				Cliente clientePj = CriarCliente.criarClientePj(nomeEmpresa, cnpjFormatado);
+				
+				System.out.print("\nDigite o CNPJ (00.000.000/0001-00) da empresa " + nomeEmpresa + ": ");
+				String cnpj = scan.next();
+				boolean cnpjVerificado = verificarCpf(cnpj);
+				cnpj = validarCnpj(cnpjVerificado, cnpj);
+				
+				Cliente clientePj = CriarCliente.criarClientePj(nomeEmpresa, cnpj);
+				
 				opt = menuInformarCriarConta(clientePj, value);
 				criarContaPessoaJuridica(opt, clientePj);
 				return clientePj;
@@ -335,11 +339,30 @@ public class Program {
 		do {
 			value = verificarCpf(cpf);
 			if (!value) {
-				System.out.println("\nCPF inválido! Digite um CPF válido (000.000.000-00):");
+				System.out.println("\nCPF inválido! Digite um CPF válido (000.000.000-00): ");
 				cpf = scan.next();
 			}
 		} while (!value);
 		
 		return cpf;
+	}
+	
+	public static boolean verificarCnpj(String value) {
+		if (value.matches("\\d{2}.\\d{3}.\\d{3}/0001\\-\\d{2}")) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static String validarCnpj(boolean value, String cnpj) {
+		do {
+			value = verificarCnpj(cnpj);
+			if (!value) {
+				System.out.println("\nCNPJ inválido! Digite um CNPJ válido (00.000.000/0001-00): ");
+				cnpj = scan.next();
+			}
+		} while (!value);
+		
+		return cnpj;
 	}
 }
