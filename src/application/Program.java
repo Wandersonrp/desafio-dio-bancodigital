@@ -1,12 +1,10 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import model.entities.Banco;
 import model.entities.cliente.Cliente;
@@ -18,6 +16,7 @@ import model.entities.exception.SaqueException;
 import model.entities.exception.TransferirException;
 import model.services.criarconta.CriarCliente;
 import model.services.criarconta.CriarConta;
+import model.util.ClasseValidacao;
 
 public class Program {
 
@@ -38,8 +37,8 @@ public class Program {
 			System.out.println();
 		} while(opcao != 0);
 		
-		//acessarContas(conta);
-		
+		banco.acessarContas(contas);
+		 
 		scan.close();
 	}
 	
@@ -81,7 +80,7 @@ public class Program {
 		return null;
 	}
 	
-	public static Conta criarContaPessoaJuridica(int value, Cliente cliente) throws InputMismatchException {
+	public static Conta criarContaPessoaJuridica(int value, Cliente cliente) {
 		switch (value) {
 			case 1:
 				ContaCorrentePessoaJuridica ccpj = CriarConta.criarContaPj(cliente, banco);
@@ -107,7 +106,8 @@ public class Program {
 	
 	public static Integer menuInformarCriarConta(Cliente cliente, int opt) {
 		if (opt == 1) {
-			System.out.println("\n" + cliente.getNomeFormatado() + ", para criar uma conta escolha uma das opções abaixo:\n");
+			System.out.println("\n" + cliente.getNomeFormatado() 
+					+ ", para criar uma conta escolha uma das opções abaixo:\n");
 			System.out.println("1 - Criar conta corrente");
 			System.out.println("2 - Criar conta poupança");
 			
@@ -132,13 +132,13 @@ public class Program {
 				System.out.print("\nDigite o seu nome completo: ");
 				scan.nextLine();
 				String nome = scan.nextLine();
-				String nomeFormatado = formatarNome(nome);
+				String nomeFormatado = formatarPrimeiroNome(nome);
 				
 				System.out.print("\n" + nomeFormatado 
-						+ ", digite um CPF válido (000.000.000-00):");
+						+ ", digite um CPF válido (000.000.000-00): ");
 				String cpf = scan.next();
-				boolean cpfVerificado = verificarCpf(cpf);
-				cpf = validarCpf(cpfVerificado, cpf);
+				boolean cpfVerificado = ClasseValidacao.verificarCpf(cpf);
+				cpf = ClasseValidacao.validarCpf(cpfVerificado, cpf);
 				
 				Cliente clientePf = CriarCliente.criarClientePf(nome, cpf);
 				clientePf.setNomeFormatado(nomeFormatado);
@@ -151,10 +151,11 @@ public class Program {
 				scan.nextLine();
 				String nomeEmpresa = scan.nextLine();
 				
-				System.out.print("\nDigite o CNPJ (00.000.000/0001-00) da empresa " + nomeEmpresa + ": ");
+				System.out.print("\nDigite o CNPJ (00.000.000/0001-00) da empresa " 
+				+ nomeEmpresa + ": ");
 				String cnpj = scan.next();
-				boolean cnpjVerificado = verificarCpf(cnpj);
-				cnpj = validarCnpj(cnpjVerificado, cnpj);
+				boolean cnpjVerificado = ClasseValidacao.verificarCnpj(cnpj);
+				cnpj = ClasseValidacao.validarCnpj(cnpjVerificado, cnpj);
 				
 				Cliente clientePj = CriarCliente.criarClientePj(nomeEmpresa, cnpj);
 				
@@ -174,23 +175,14 @@ public class Program {
 	public static void menuCadastrarCliente() {
 		System.out.println("Bem-vindo ao atendimento +PlusBank!" 
 				+ "\nEscolha uma das opções para se cadastrar:\n");
-		System.out.println("1 - Pessoa física");
-		System.out.println("2 - Pessoa jurídica");
-		System.out.println("0 - Sair");
+		System.out.println("1 - Pessoa física\n2 - Pessoa jurídica\n0 - Sair");
 	}
 	
-	public static String formatarNome(String value) {
+	public static String formatarPrimeiroNome(String value) {
 		String[] vetor = value.split(" ");
 		String nome = vetor[0];
 		return nome;
 	}
-	
-	/*public static String formatarNomePrimeiraLetra(String value) {
-		value.toLowerCase();
-		String[] vetorLetra = value.split("");
-		String[] vetorNome = value.split(" ");
-		String nome = vetorNome[0];
-	}*/
 	
 	public static void informarContaCriada(Cliente cliente, Conta conta) {
 		System.out.println("\n==========================================================\n");
@@ -198,38 +190,24 @@ public class Program {
 		System.out.println("\n==========================================================\n");
 		System.out.println("\nCliente: " + cliente.getNome());
 		
-		if (cliente.getDocumento().length() == 14 ) {
-			System.out.println("\nCPF: " + cliente.getDocumento());
-		} else {
-			System.out.println("\nCNPJ: " + cliente.getDocumento());
-		}
+		if (cliente.getDocumento().length() == 14 ) System.out.println("\nCPF: " + cliente.getDocumento());
+		else System.out.println("\nCNPJ: " + cliente.getDocumento());
 		
 		System.out.println("\nNúmero da conta: " + conta.getNumeroConta());
 		System.out.println("\nSaldo: R$ " + String.format("%.2f", conta.getSaldo()) + "\n");
 	}
 	
-	public static void acessarContas(List<Conta> list) {
-		System.out.println("==========================================================\n");
-		System.out.println("\t\t Lista de Contas do " + banco.getNOME());
-		System.out.println("==========================================================\n");
-		for (Conta c : list) {
-			System.out.println(c + "\n");
-			System.out.println("==========================================================\n");
-		}
-	}
-	
 	public static void menuAcoesConta(Conta conta) {
 		System.out.println("==========================================================\n");
+		
 		if (conta.getCliente().getDocumento().length() == 14) {
-			System.out.println("\n" + conta.getCliente().getNomeFormatado() + ", escolha uma das opções a seguir: ");
+			System.out.println("\n" + conta.getCliente().getNomeFormatado() 
+					+ ", escolha uma das opções a seguir: ");
 		} else {
 			System.out.println("\n" + conta.getCliente().getNome() + ", escolha uma das opções a seguir: ");
 		}
-		System.out.println("1 - Depositar ");
-		System.out.println("2 - Sacar ");
-		System.out.println("3 - Transferir ");
-		System.out.println("4 - Extrato");
-		System.out.println("0 - Sair");
+		
+		System.out.println("1 - Depositar\n2 - Sacar\n3 - Transferir\n4 - Extrato\n0 - Sair ");
 	}
 	
 	public static void escolherAcoesConta(int value, Cliente cliente, Conta conta) {
@@ -245,12 +223,13 @@ public class Program {
 				case 2:
 					System.out.println("\nDigite o valor a sacar: ");
 					valor = scan.nextDouble();
-					System.out.println("\nTaxa de saque R$ 5.00\n");
+					
 					try {
 						conta.sacar(valor);
 					} catch (SaqueException e) {
 						System.out.println(e.getMessage());
 					} 
+					
 					break;
 				case 3:
 					System.out.println("\nDigite o valor a ser transferido: ");
@@ -266,25 +245,28 @@ public class Program {
 					}
 					
 					System.out.println("\nDigite o CPF/CNPJ do titular conta de destino: ");
-					String cpf = scan.next();
-					boolean cpfVerificado = verificarCpf(cpf);
-					cpf = validarCpf(cpfVerificado, cpf);
+					String documento = scan.next();
+					boolean cpfVerificado = ClasseValidacao.verificarCpf(documento);
+					boolean cnpjVerificado = ClasseValidacao.verificarCnpj(documento);
+					
+					if (cpfVerificado) documento = ClasseValidacao.validarCpf(cpfVerificado, documento);
+					if(cnpjVerificado) documento = ClasseValidacao.validarCnpj(cnpjVerificado, documento);
 					
 					try {
 						for (Conta c : contas) {
-							if (c.getCliente().getDocumento().equals(cpf)) {
+							if (c.getCliente().getDocumento().equals(documento)) {
 								conta.transferir(valor, c);
 
-								System.out.println("\n" + conta.getCliente().getNomeFormatado() 
-										+ ", o valor de R$ " 
-										+ String.format("%.2f", valor) + " foi transferido com sucesso para " 
+								System.out.println("\n" + conta.getCliente().getNome() 
+										+ ", o valor de R$ " + String.format("%.2f", valor) 
+										+ " foi transferido com sucesso para " 
 										+ c.getCliente().getNome() + ".");
 								break;
 							} else {
 								System.out.println("\nConta não encontrada!");
 							}
-							
 						}
+						
 					} catch (TransferirException e) {
 						System.out.println(e.getMessage());
 					}
@@ -308,43 +290,5 @@ public class Program {
 			}
 			
 		} while (opcao != 2);
-	}
-	
-	public static boolean verificarCpf(String value) {
-		if (value.matches("\\d{3}.\\d{3}.\\d{3}-\\d{2}")) {
-			return true;
-		}
-		return false;
-	}
-	
-	public static String validarCpf(boolean value, String cpf) {
-		do {
-			value = verificarCpf(cpf);
-			if (!value) {
-				System.out.println("\nCPF inválido! Digite um CPF válido (000.000.000-00): ");
-				cpf = scan.next();
-			}
-		} while (!value);
-		
-		return cpf;
-	}
-	
-	public static boolean verificarCnpj(String value) {
-		if (value.matches("\\d{2}.\\d{3}.\\d{3}/0001\\-\\d{2}")) {
-			return true;
-		}
-		return false;
-	}
-	
-	public static String validarCnpj(boolean value, String cnpj) {
-		do {
-			value = verificarCnpj(cnpj);
-			if (!value) {
-				System.out.println("\nCNPJ inválido! Digite um CNPJ válido (00.000.000/0001-00): ");
-				cnpj = scan.next();
-			}
-		} while (!value);
-		
-		return cnpj;
 	}
 }

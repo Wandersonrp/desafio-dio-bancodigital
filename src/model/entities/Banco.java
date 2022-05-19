@@ -7,7 +7,7 @@ import model.entities.conta.Conta;
 
 public class Banco {
 
-	private String NOME = "+Plus Digital BANK";
+	private static String NOME = "+Plus Digital BANK";
 	
 	private List<Conta> conta = new ArrayList<>();
 
@@ -24,5 +24,16 @@ public class Banco {
 
 	public void setConta(List<Conta> conta) {
 		this.conta = conta;
+	}
+	
+	public static void acessarContas(List<Conta> list) {
+		System.out.println("==========================================================\n");
+		System.out.println("\t\t Lista de Contas do " + NOME);
+		System.out.println("==========================================================\n");
+		
+		for (Conta c : list) {
+			System.out.println(c + "\n");
+			System.out.println("==========================================================\n");
+		}
 	}
 }

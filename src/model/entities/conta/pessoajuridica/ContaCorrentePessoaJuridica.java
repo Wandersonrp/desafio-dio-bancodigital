@@ -27,12 +27,22 @@ public class ContaCorrentePessoaJuridica extends Conta {
 	public void transferir(Double valor, Conta contaDestino) {
 		TransferirException transferirException = new TransferirException();
 		transferirException.exceptionTransferir(valor, this.saldo, contaDestino);
-		this.sacar(valor);
+		this.saldo -= valor;
 		contaDestino.depositar(valor);
 	}
 	
 	@Override
 	public void depositar(Double valor) {
 		saldo += valor;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Conta corrente pessoa jurídica");
+		sb.append("\nAgência: " + AGENCIA);
+		sb.append("\nNúmero da Conta: " + numeroConta);
+		sb.append("\nCliente: " + cliente.getNome());
+		return sb.toString();
 	}
 }
