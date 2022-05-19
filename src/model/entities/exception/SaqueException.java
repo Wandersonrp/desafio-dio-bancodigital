@@ -16,8 +16,8 @@ public class SaqueException extends RuntimeException {
 			throw new SaqueException("Impossível realizar a operação de saque! O valor de saldo é R$ " 
 		+ String.format("%.2f", saldo) + ".");
 		}
-		if (valor < 0) {
-			throw new SaqueException("Impossível realizar a operação de saque! O valor a sacar é menor que R$ 0.00.");
+		if (valor <= 0) {
+			throw new SaqueException("Impossível realizar a operação de saque! O valor a sacar é menor ou igual a R$ 0.00.");
 		}
 		if (saldo < (valorTaxaSaque)) {
 			throw new SaqueException("Impossível realizar a operação de saque!\n O valor de saldo(R$ " 

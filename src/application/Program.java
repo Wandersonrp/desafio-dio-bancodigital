@@ -35,9 +35,11 @@ public class Program {
 			menuCadastrarCliente();
 			opcao = scan.nextInt();
 			cadastrarCliente(opcao);
+			System.out.println();
 		} while(opcao != 0);
 		
 		//acessarContas(conta);
+		
 		scan.close();
 	}
 	
@@ -152,7 +154,7 @@ public class Program {
 	}
 	
 	public static void menuCadastrarCliente() {
-		System.out.println("\nBem-vindo ao atendimento +PlusBank!\nEscolha uma das opções para se cadastrar:\n");
+		System.out.println("Bem-vindo ao atendimento +PlusBank!\nEscolha uma das opções para se cadastrar:\n");
 		System.out.println("1 - Pessoa física");
 		System.out.println("2 - Pessoa jurídica");
 		System.out.println("0 - Sair");
@@ -163,6 +165,13 @@ public class Program {
 		String nome = vetor[0];
 		return nome;
 	}
+	
+	/*public static String formatarNomePrimeiraLetra(String value) {
+		value.toLowerCase();
+		String[] vetorLetra = value.split("");
+		String[] vetorNome = value.split(" ");
+		String nome = vetorNome[0];
+	}*/
 	
 	public static void informarContaCriada(Cliente cliente, Conta conta) {
 		Banco banco = new Banco();
@@ -284,7 +293,8 @@ public class Program {
 						if (c.getCliente().getDocumento().equals(conta.getCliente().getDocumento())) {
 							continue;
 						}
-						System.out.println(c.getCliente().getDocumento());
+						System.out.println("\nCliente: " + c.getCliente().getNome() + 
+								" - Documento: " + c.getCliente().getDocumento());
 					}
 					
 					System.out.println("\nDigite o CPF/CNPJ do titular conta de destino: ");
@@ -294,7 +304,10 @@ public class Program {
 						for (Conta c : contas) {
 							if (c.getCliente().getDocumento().equals(cpfFormatado)) {
 								conta.transferir(valor, c);
-								System.out.println(c.obterExtrato(c.getCliente(), c, banco));
+								//System.out.println(c.obterExtrato(c.getCliente(), c, banco));
+								System.out.println("\n" + conta.getCliente().getNomeFormatado() + ", o valor de R$ " 
+										+ String.format("%.2f", valor) + " foi transferido com sucesso para " 
+										+ c.getCliente().getNome() + ".");
 								break;
 							} else {
 								System.out.println("\nConta não encontrada!");
