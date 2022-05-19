@@ -40,4 +40,25 @@ public class ClasseValidacao {
 		
 		return cnpj;
 	}
+	
+	public static boolean validarLetraInicialFinal(String value) {
+		String nome = value;
+		char primeiraLetra = nome.charAt(0);
+		char ultimaLetra = nome.charAt(nome.length() - 1);
+		
+		if (Character.isAlphabetic(primeiraLetra) && Character.isAlphabetic(ultimaLetra)) return true;
+		
+		return false;
+	}
+	
+	public static boolean validarNome(String value) {
+		String nome = value;
+		return nome.matches("[A-Z][a-zA-Z]{2,}");
+	}
+	
+	public static String formatarPrimeiroNome(String value) {
+		String[] vetor = value.split(" ");
+		String nome = vetor[0];
+		return nome;
+	}
 }

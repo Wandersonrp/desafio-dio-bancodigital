@@ -28,7 +28,7 @@ public class Banco {
 	
 	public static void acessarContas(List<Conta> list) {
 		System.out.println("==========================================================\n");
-		System.out.println("\t\t Lista de Contas do " + NOME);
+		System.out.println("\t Lista de Contas do " + NOME);
 		System.out.println("==========================================================\n");
 		
 		for (Conta c : list) {

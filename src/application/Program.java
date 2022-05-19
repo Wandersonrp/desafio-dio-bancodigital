@@ -132,7 +132,7 @@ public class Program {
 				System.out.print("\nDigite o seu nome completo: ");
 				scan.nextLine();
 				String nome = scan.nextLine();
-				String nomeFormatado = formatarPrimeiroNome(nome);
+				String nomeFormatado = ClasseValidacao.formatarPrimeiroNome(nome);
 				
 				System.out.print("\n" + nomeFormatado 
 						+ ", digite um CPF válido (000.000.000-00): ");
@@ -176,12 +176,6 @@ public class Program {
 		System.out.println("Bem-vindo ao atendimento +PlusBank!" 
 				+ "\nEscolha uma das opções para se cadastrar:\n");
 		System.out.println("1 - Pessoa física\n2 - Pessoa jurídica\n0 - Sair");
-	}
-	
-	public static String formatarPrimeiroNome(String value) {
-		String[] vetor = value.split(" ");
-		String nome = vetor[0];
-		return nome;
 	}
 	
 	public static void informarContaCriada(Cliente cliente, Conta conta) {
