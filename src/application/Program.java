@@ -48,21 +48,27 @@ public class Program {
 		switch (value) {
 			case 1:
 				ContaCorrentePessoaFisica ccpf = CriarConta.criarContaPf(cliente, banco);
+				
 				System.out.println("\nParabéns, " + cliente.getNomeFormatado() + "!\n"
 						+ "Conta Corrente criada com sucesso!");
+				
 				contas.add(ccpf);
 				informarContaCriada(cliente, ccpf);
 				menuAcoesConta(ccpf);
+				
 				int opt = scan.nextInt();
 				escolherAcoesConta(opt, cliente, ccpf);
 				return ccpf;
 			case 2:
 				ContaPoupanca cpoupanca = CriarConta.criarContaPoupanca(cliente, banco);
+				
 				System.out.println("\nParabéns, " + cliente.getNomeFormatado() + "!\n"
 						+ "Conta Poupança criada com sucesso!");
+				
 				contas.add(cpoupanca);
 				informarContaCriada(cliente, cpoupanca);
 				menuAcoesConta(cpoupanca);
+				
 				opt = scan.nextInt();
 				escolherAcoesConta(opt, cliente, cpoupanca);
 				return cpoupanca;
@@ -79,11 +85,14 @@ public class Program {
 		switch (value) {
 			case 1:
 				ContaCorrentePessoaJuridica ccpj = CriarConta.criarContaPj(cliente, banco);
+				
 				System.out.println("\nParabéns, " + cliente.getNome() + "!\n"
 						+ "Conta Corrente Pessoa Jurídica criada com sucesso!");
+				
 				contas.add(ccpj);
 				informarContaCriada(cliente, ccpj);
 				menuAcoesConta(ccpj);
+				
 				int opt = scan.nextInt();
 				escolherAcoesConta(opt, cliente, ccpj);
 				return ccpj;
@@ -184,46 +193,19 @@ public class Program {
 	}*/
 	
 	public static void informarContaCriada(Cliente cliente, Conta conta) {
-		Banco banco = new Banco();
 		System.out.println("\n==========================================================\n");
 		System.out.println("\t\t  " + banco.getNOME());
 		System.out.println("\n==========================================================\n");
 		System.out.println("\nCliente: " + cliente.getNome());
+		
 		if (cliente.getDocumento().length() == 14 ) {
 			System.out.println("\nCPF: " + cliente.getDocumento());
 		} else {
 			System.out.println("\nCNPJ: " + cliente.getDocumento());
 		}
+		
 		System.out.println("\nNúmero da conta: " + conta.getNumeroConta());
 		System.out.println("\nSaldo: R$ " + String.format("%.2f", conta.getSaldo()) + "\n");
-	}
-
-	public static String formatarCnpj(String value) {
-		String traco = "-";
-		String ponto = ".";
-		String barra = "/";
-		String[] cnpj = value.split("");
-		String[] vetor = new String[18];
-		
-		int cont = 0;
-		for (int i = 0; i < 18; i++) {
-			if (i == 2 || i == 6) {
-				vetor[i] = ponto;
-				continue;
-			}
-			if (i == 10) {
-				vetor[i] = barra;
-				continue;
-			}
-			if (i == 15) {
-				vetor[i] = traco;
-				continue;
-			}
-			vetor[i] = cnpj[cont];
-			cont++;
-		}
-		String cnpjFormatado = Arrays.stream(vetor).collect(Collectors.joining());
-		return cnpjFormatado;
 	}
 	
 	public static void acessarContas(List<Conta> list) {
