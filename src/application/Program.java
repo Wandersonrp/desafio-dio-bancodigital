@@ -42,7 +42,7 @@ public class Program {
 		scan.close();
 	}
 	
-	public static Conta  criarContaPessoaFisica(int value, Cliente cliente) {
+	public static Conta criarContaPessoaFisica(int value, Cliente cliente) {
 		Scanner scan = new Scanner(System.in);
 		switch (value) {
 			case 1:
@@ -112,7 +112,8 @@ public class Program {
 			System.out.println("2 - Criar conta poupança");
 			
 		} else if (opt == 2) {
-			System.out.println("\n" + cliente.getNome() + ", para criar uma conta escolha uma das opções abaixo:\n");
+			System.out.println("\n" + cliente.getNome() 
+			+ ", para criar uma conta escolha uma das opções abaixo:\n");
 			System.out.println("1 - Criar conta corrente para pessoa jurídica");
 		}
 	
@@ -215,9 +216,9 @@ public class Program {
 					conta.depositar(valor);
 					break;
 				case 2:
-					System.out.println("\nDigite o valor a sacar: ");
+					System.out.println("\nTaxa de Saque R$ 5.00!\nDigite o valor a sacar: ");
 					valor = scan.nextDouble();
-					
+					 
 					try {
 						conta.sacar(valor);
 					} catch (SaqueException e) {
@@ -238,7 +239,7 @@ public class Program {
 								" - Documento: " + c.getCliente().getDocumento());
 					}
 					
-					System.out.println("\nDigite o CPF/CNPJ do titular conta de destino: ");
+					System.out.println("\nDigite o CPF/CNPJ do titular da conta de destino: ");
 					String documento = scan.next();
 					boolean cpfVerificado = ClasseValidacao.verificarCpf(documento);
 					boolean cnpjVerificado = ClasseValidacao.verificarCnpj(documento);

@@ -3,6 +3,8 @@ package model.entities.conta;
 import model.entities.Banco;
 import model.entities.NumeroConta;
 import model.entities.cliente.Cliente;
+import model.entities.exception.SaqueException;
+import model.entities.exception.TransferirException;
 
 public abstract class Conta implements ContaInterface {
 
@@ -47,6 +49,28 @@ public abstract class Conta implements ContaInterface {
 
 	public Banco getBanco() {
 		return banco;
+	}
+	
+	@Override
+	public void sacar(Double valor) {
+		double taxaSaque = 5d;
+		double valorTaxaSaque = valor + taxaSaque;
+		SaqueException saqueException = new SaqueException();
+		saqueException.exceptionSaque(saldo, valor, taxaSaque, valorTaxaSaque);
+		saldo -= valorTaxaSaque;
+	}
+	
+	@Override
+	public void transferir(Double valor, Conta contaDestino) {
+		TransferirException transferirException = new TransferirException();
+		transferirException.exceptionTransferir(valor, this.saldo, contaDestino);
+		this.saldo -= valor;
+		contaDestino.depositar(valor);
+	}
+	
+	@Override
+	public void depositar(Double valor) {
+		saldo += valor;
 	}
 	
 	@Override

@@ -51,7 +51,7 @@ public class ClasseValidacao {
 		return false;
 	}
 	
-	public static boolean validarNome(String value) {
+	public static boolean verificarNome(String value) {
 		String nome = value;
 		return nome.matches("[A-Z][a-zA-Z]{2,}");
 	}
@@ -60,5 +60,23 @@ public class ClasseValidacao {
 		String[] vetor = value.split(" ");
 		String nome = vetor[0];
 		return nome;
+	}
+	
+	public static boolean verificarOpcao(String value) {
+		if (value.matches("\\d{1}")) return true;
+		return false;
+	}
+	
+	public static String validarOpcao(boolean value, String op) {
+		do {
+			value = verificarOpcao(op);
+			if (!value) {
+				System.out.println("\nOpção inexistente!" + 
+						"\nDigite uma opção valida: ");
+				op = scan.next();
+			}
+		} while (!value);
+			
+		return op;
 	}
 }
